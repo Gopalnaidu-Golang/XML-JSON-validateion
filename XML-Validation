@@ -116,5 +116,42 @@ func main() {
 		log.Fatalf("xml.Unmarshal failed with '%s'\n", err)
 	}
 	fmt.Printf("%#v\n\n", people)
+	
+	fmt.Println("****************")
+	fmt.Println(readxmlstruct.PartnerStatus.AccountName)
+	//fmt.Println(readxmlstruct.Notifications)
+	fmt.Println("****************")
+	//fmt.Println(readxmlstruct.PartnerStatus)
+	fmt.Println(readxmlstruct.Status)
+	//fmt.Println(readxmlstruct.TrackVia)
+	fmt.Println("****************")
+	fmt.Println(readxmlstruct.Errors)
+	res := readxmlstruct.PartnerStatus.ConnectionMethods.ConnectionMethod
+	for _, valn := range res {
+		fmt.Println("am here --")
+		fmt.Println(valn.Label)
+		fmt.Println(valn.Method)
+		respn := valn.EquipmentIdentifierList.EquipmentIdentifier
+		for _, val3 := range respn {
+			fmt.Println("am here ++")
+			fmt.Println(val3.Identifier)
+		}
+	}
+	//fmt.Println(readxmlstruct.PartnerStatus.ConnectionMethods.ConnectionMethod)
+	//fmt.Println(readxmlstruct.PartnerStatus.ConnectionMethods.ConnectionMethod.Method)
+	fmt.Println("****************")
+
+	fmt.Println("****************")
+	val2 := readxmlstruct.PartnerStatus.PartnerCodes.PartnerCode
+	str := ""
+	for _, val1 := range val2 {
+		fmt.Println("am here **")
+		str = str + string(val1.Code)
+
+	}
+	fmt.Println(str)
+
+}
 	// :show end
 }
+
