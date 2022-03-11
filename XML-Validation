@@ -1,0 +1,120 @@
+
+
+package main
+
+import (
+	"encoding/xml"
+	"fmt"
+	"log"
+)
+
+// :show start
+var xmlStr = `<xml>
+  <Status>Success</Status>
+<PartnerStatus>
+            <Partnered>Yes</Partnered>
+            <AccountName>MPoint Trucking</AccountName>
+            <AccountNameMPID>1234567</AccountNameMPID>
+            <DOT>111222</DOT>
+            <OperatingAuthorityNumbers/>
+            <PartnerCodes>
+                <PartnerCode>
+                    <Code>ABCD</Code>
+                </PartnerCode>
+            </PartnerCodes>
+            <ConnectionMethods>
+                <ConnectionMethod>
+                    <Method>Telematics</Method>
+                    <Label>MPoint Trucking VehicleId</Label>
+                    <EquipmentIdentifierList>
+                        <EquipmentIdentifier>
+                            <Identifier>146</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>145</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>144</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>157</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>143</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>156</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>142</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>166</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>151</Identifier>
+                        </EquipmentIdentifier>
+                        <EquipmentIdentifier>
+                            <Identifier>141</Identifier>
+                        </EquipmentIdentifier>
+                    </EquipmentIdentifierList>
+                </ConnectionMethod>
+            </ConnectionMethods>
+        </PartnerStatus>
+    <Errors>TestError</Errors>
+</xml>`
+
+type (
+PartnerResult struct {
+		XMLName       xml.Name          `xml:"xml"`
+		Status        string            `xml:"Status"`
+		PartnerStatus PartnerStatusData `xml:"PartnerStatus"`
+		Errors        string            `xml:"Errors"`
+	}
+
+	PartnerStatusData struct {
+		Partnered                 string            `xml:"Partnered"`
+		AccountName               string            `xml:"AccountName"`
+		AccountNameMPID           string            `xml:"AccountNameMPID"`
+		DOT                       string            `xml:"DOT"`
+		OperatingAuthorityNumbers string            `xml:"OperatingAuthorityNumbers"`
+		PartnerCodes              PartnerCodes      `xml:"PartnerCodes"`
+		ConnectionMethods         ConnectionMethods `xml:"ConnectionMethods"`
+	}
+	PartnerCodes struct {
+		PartnerCode []PartnerCode `xml:"PartnerCode"`
+	}
+	ConnectionMethods struct {
+		ConnectionMethod []ConnectionMethod `xml:"ConnectionMethod"`
+	}
+
+	ConnectionMethod struct {
+		Method                  string                  `xml:"Method"`
+		Label                   string                  `xml:"Label"`
+		EquipmentIdentifierList EquipmentIdentifierList `xml:"EquipmentIdentifierList"`
+	}
+	EquipmentIdentifierList struct {
+		EquipmentIdentifier []EquipmentIdentifier `xml:"EquipmentIdentifier"`
+	}
+	EquipmentIdentifier struct {
+		Identifier string `xml:"Identifier"`
+	}
+	PartnerCode struct {
+		Code string `xml:"Code"`
+	}
+
+)
+
+// :show end
+
+func main() {
+	// :show start
+	var people PartnerResult
+	data := []byte(xmlStr)
+	err := xml.Unmarshal(data, &people)
+	if err != nil {
+		log.Fatalf("xml.Unmarshal failed with '%s'\n", err)
+	}
+	fmt.Printf("%#v\n\n", people)
+	// :show end
+}
